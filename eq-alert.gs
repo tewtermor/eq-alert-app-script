@@ -1,7 +1,7 @@
 const latitude = '' // Your home's latitude
 const longitude = '' // Your home's longitude
 
-async function mainFuntion() {
+async function eqAlertFunction() {
   const eqInfo = await getEQInfo()
   if (!eqInfo) return
   if (eqInfo.features.length === 0) return
@@ -15,6 +15,14 @@ async function mainFuntion() {
     payload: JSON.stringify(htmlContent)
   }
   UrlFetchApp.fetch(url, options)
+}
+
+function createTimeDrivenTriggers() {
+  // Trigger every 1 minutes.
+  ScriptApp.newTrigger('eqAlertFunction')
+      .timeBased()
+      .everyMinutes(1)
+      .create()
 }
 
 function getCode(text) {
@@ -148,12 +156,4 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 function toRadians(degrees) {
   return degrees * (Math.PI / 180);
-}
-
-function createTimeDrivenTriggers() {
-  // Trigger every 1 minutes.
-  ScriptApp.newTrigger('mainFuntion')
-      .timeBased()
-      .everyMinutes(1)
-      .create()
 }
